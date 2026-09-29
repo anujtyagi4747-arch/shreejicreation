@@ -1830,3 +1830,898 @@ document.querySelectorAll("img")
 </script>
 
 <!-- ================= END PART 3 ================= -->
+<!-- ================= FULL FUNCTIONALITY PATCH ================= -->
+
+<style>
+
+/* ---------- POPUP SYSTEM ---------- */
+
+#scPopup{
+  position:fixed;
+  inset:0;
+  z-index:99999;
+  display:none;
+  align-items:center;
+  justify-content:center;
+  padding:16px;
+  background:rgba(35,27,23,.68);
+  backdrop-filter:blur(8px);
+}
+
+#scPopup.active{
+  display:flex;
+}
+
+.sc-popup-box{
+  width:100%;
+  max-width:430px;
+  max-height:90vh;
+  overflow:auto;
+  background:#fcfaf7;
+  border-radius:25px;
+  padding:22px;
+  box-shadow:0 20px 70px rgba(0,0,0,.3);
+  animation:scPopupIn .25s ease;
+}
+
+@keyframes scPopupIn{
+  from{
+    opacity:0;
+    transform:translateY(25px) scale(.97);
+  }
+  to{
+    opacity:1;
+    transform:translateY(0) scale(1);
+  }
+}
+
+.sc-popup-close{
+  width:38px;
+  height:38px;
+  border-radius:50%;
+  background:#302925;
+  color:white;
+  float:right;
+  font-size:22px;
+}
+
+.sc-popup-icon{
+  width:62px;
+  height:62px;
+  border-radius:50%;
+  background:#f1e5db;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:28px;
+  margin:8px 0 15px;
+}
+
+.sc-popup-title{
+  clear:both;
+  font-family:Georgia,serif;
+  font-size:26px;
+  color:#302925;
+  margin-bottom:8px;
+}
+
+.sc-popup-text{
+  color:#756860;
+  font-size:13px;
+  line-height:1.7;
+}
+
+.sc-popup-btn{
+  width:100%;
+  margin-top:16px;
+  padding:14px;
+  border-radius:13px;
+  background:#302925;
+  color:white;
+  font-weight:bold;
+}
+
+/* ---------- PRODUCT QUICK POPUP ---------- */
+
+#quickProduct{
+  position:fixed;
+  inset:0;
+  z-index:100000;
+  display:none;
+  align-items:flex-end;
+  background:rgba(35,27,23,.65);
+  backdrop-filter:blur(7px);
+}
+
+#quickProduct.active{
+  display:flex;
+}
+
+.quick-box{
+  width:100%;
+  max-width:550px;
+  margin:auto;
+  background:#fcfaf7;
+  border-radius:28px 28px 0 0;
+  padding:10px 16px 24px;
+  animation:quickUp .28s ease;
+}
+
+@keyframes quickUp{
+  from{
+    transform:translateY(100%);
+  }
+  to{
+    transform:translateY(0);
+  }
+}
+
+.quick-line{
+  width:42px;
+  height:4px;
+  background:#d7c7bc;
+  border-radius:10px;
+  margin:5px auto 15px;
+}
+
+.quick-img{
+  width:100%;
+  height:240px;
+  object-fit:cover;
+  border-radius:20px;
+}
+
+.quick-title{
+  font-family:Georgia,serif;
+  font-size:25px;
+  margin-top:15px;
+}
+
+.quick-price{
+  font-weight:bold;
+  color:#a66f60;
+  margin-top:7px;
+}
+
+.quick-desc{
+  font-size:13px;
+  color:#776a62;
+  line-height:1.6;
+  margin-top:8px;
+}
+
+.quick-actions{
+  display:flex;
+  gap:9px;
+  margin-top:16px;
+}
+
+.quick-actions button{
+  flex:1;
+  height:46px;
+  border-radius:13px;
+  font-weight:bold;
+}
+
+.quick-close{
+  background:#f0e5dc;
+  color:#42342f;
+}
+
+.quick-order{
+  background:#302925;
+  color:white;
+}
+
+/* ---------- TOAST ---------- */
+
+#scToast{
+  position:fixed;
+  left:50%;
+  bottom:82px;
+  transform:translate(-50%,20px);
+  z-index:110000;
+  background:#302925;
+  color:white;
+  padding:12px 17px;
+  border-radius:30px;
+  font-size:12px;
+  opacity:0;
+  pointer-events:none;
+  transition:.25s ease;
+  white-space:nowrap;
+}
+
+#scToast.show{
+  opacity:1;
+  transform:translate(-50%,0);
+}
+
+/* ---------- SEARCH ---------- */
+
+#scSearch{
+  position:fixed;
+  inset:0;
+  z-index:120000;
+  display:none;
+  background:#fcfaf7;
+}
+
+#scSearch.active{
+  display:block;
+}
+
+.sc-search-head{
+  display:flex;
+  gap:9px;
+  align-items:center;
+  padding:15px;
+  border-bottom:1px solid #eadfd6;
+}
+
+.sc-search-input{
+  flex:1;
+  height:45px;
+  border:1px solid #dfd1c7;
+  border-radius:13px;
+  padding:0 14px;
+  outline:none;
+  background:#fff;
+  font-size:14px;
+}
+
+.sc-search-close{
+  width:43px;
+  height:43px;
+  border-radius:13px;
+  background:#302925;
+  color:white;
+}
+
+.sc-search-result{
+  padding:20px 15px;
+}
+
+.search-card{
+  display:flex;
+  gap:12px;
+  padding:12px;
+  border:1px solid #eadfd6;
+  border-radius:16px;
+  margin-bottom:10px;
+  background:white;
+}
+
+.search-card img{
+  width:65px;
+  height:65px;
+  object-fit:cover;
+  border-radius:11px;
+}
+
+.search-card strong{
+  display:block;
+  margin:7px 0 5px;
+}
+
+.search-card span{
+  color:#a66f60;
+  font-size:12px;
+}
+
+/* ---------- MOBILE ---------- */
+
+@media(max-width:700px){
+
+  .sc-popup-box{
+    max-height:86vh;
+    border-radius:24px;
+    padding:19px;
+  }
+
+  .quick-box{
+    padding-bottom:25px;
+  }
+
+  .quick-img{
+    height:220px;
+  }
+
+}
+
+</style>
+
+
+<!-- GENERAL POPUP -->
+
+<div id="scPopup">
+
+  <div class="sc-popup-box">
+
+    <button
+      class="sc-popup-close"
+      onclick="scClosePopup()">
+      ×
+    </button>
+
+    <div class="sc-popup-icon" id="scPopupIcon">
+      ✦
+    </div>
+
+    <div
+      class="sc-popup-title"
+      id="scPopupTitle">
+      Shreeji Creations
+    </div>
+
+    <div
+      class="sc-popup-text"
+      id="scPopupText">
+      Handmade memories created with love.
+    </div>
+
+    <button
+      class="sc-popup-btn"
+      onclick="scClosePopup()">
+      Continue
+    </button>
+
+  </div>
+
+</div>
+
+
+<!-- QUICK PRODUCT -->
+
+<div id="quickProduct">
+
+  <div class="quick-box">
+
+    <div class="quick-line"></div>
+
+    <img
+      id="quickImg"
+      class="quick-img"
+      src=""
+      alt="Product">
+
+    <div
+      id="quickTitle"
+      class="quick-title">
+      Product
+    </div>
+
+    <div
+      id="quickPrice"
+      class="quick-price">
+      ₹0
+    </div>
+
+    <div
+      id="quickDesc"
+      class="quick-desc">
+      Handmade product.
+    </div>
+
+    <div class="quick-actions">
+
+      <button
+        class="quick-close"
+        onclick="scCloseQuick()">
+        Close
+      </button>
+
+      <button
+        class="quick-order"
+        onclick="scQuickOrder()">
+        Order on WhatsApp
+      </button>
+
+    </div>
+
+  </div>
+
+</div>
+
+
+<!-- TOAST -->
+
+<div id="scToast">
+  Done
+</div>
+
+
+<!-- SEARCH -->
+
+<div id="scSearch">
+
+  <div class="sc-search-head">
+
+    <input
+      id="scSearchInput"
+      class="sc-search-input"
+      type="search"
+      placeholder="Search products..."
+      oninput="scSearchProducts(this.value)">
+
+    <button
+      class="sc-search-close"
+      onclick="scCloseSearch()">
+      ×
+    </button>
+
+  </div>
+
+  <div
+    id="scSearchResult"
+    class="sc-search-result">
+
+  </div>
+
+</div>
+
+
+<script>
+
+/* ==========================================
+   SHREEJI CREATIONS FUNCTIONALITY
+========================================== */
+
+let scCurrentProduct=0;
+
+
+/* ---------- TOAST ---------- */
+
+function scToast(message){
+
+  const toast=
+    document.getElementById("scToast");
+
+  toast.textContent=message;
+
+  toast.classList.add("show");
+
+  clearTimeout(window.scToastTimer);
+
+  window.scToastTimer=setTimeout(function(){
+
+    toast.classList.remove("show");
+
+  },2200);
+
+}
+
+
+/* ---------- GENERAL POPUP ---------- */
+
+function scPopup(title,text,icon){
+
+  document.getElementById("scPopupTitle")
+  .textContent=title;
+
+  document.getElementById("scPopupText")
+  .textContent=text;
+
+  document.getElementById("scPopupIcon")
+  .textContent=icon || "✦";
+
+  document.getElementById("scPopup")
+  .classList.add("active");
+
+  document.body.style.overflow="hidden";
+
+}
+
+
+function scClosePopup(){
+
+  document.getElementById("scPopup")
+  .classList.remove("active");
+
+  document.body.style.overflow="";
+
+}
+
+
+/* ---------- QUICK PRODUCT ---------- */
+
+function scOpenQuick(index){
+
+  if(!allProducts[index]){
+    return;
+  }
+
+  scCurrentProduct=index;
+
+  const p=allProducts[index];
+
+  document.getElementById("quickImg")
+  .src=p.image;
+
+  document.getElementById("quickTitle")
+  .textContent=p.name;
+
+  document.getElementById("quickPrice")
+  .textContent=p.price;
+
+  document.getElementById("quickDesc")
+  .textContent=
+    p.size+
+    " • Handcrafted by Shreeji Creations with care and attention to detail.";
+
+  document.getElementById("quickProduct")
+  .classList.add("active");
+
+  document.body.style.overflow="hidden";
+
+}
+
+
+function scCloseQuick(){
+
+  document.getElementById("quickProduct")
+  .classList.remove("active");
+
+  document.body.style.overflow="";
+
+}
+
+
+/* ---------- QUICK ORDER ---------- */
+
+function scQuickOrder(){
+
+  const p=
+    allProducts[scCurrentProduct];
+
+  const message=
+`Hello Shreeji Creations!
+
+I am interested in this product:
+
+Product: ${p.name}
+Size: ${p.size}
+Price: ${p.price}
+Quantity: 1
+
+Please share availability and details.`;
+
+  window.location.href=
+    "https://wa.me/919027889846?text="+
+    encodeURIComponent(message);
+
+}
+
+
+/* ---------- SEARCH OPEN ---------- */
+
+function scOpenSearch(){
+
+  document.getElementById("scSearch")
+  .classList.add("active");
+
+  document.body.style.overflow="hidden";
+
+  setTimeout(function(){
+
+    document.getElementById("scSearchInput")
+    .focus();
+
+  },100);
+
+}
+
+
+function scCloseSearch(){
+
+  document.getElementById("scSearch")
+  .classList.remove("active");
+
+  document.body.style.overflow="";
+
+}
+
+
+/* ---------- SEARCH PRODUCTS ---------- */
+
+function scSearchProducts(value){
+
+  const box=
+    document.getElementById("scSearchResult");
+
+  const query=
+    value.toLowerCase().trim();
+
+  if(!query){
+
+    box.innerHTML=
+      "<p style='color:#806f66;font-size:13px;'>"+
+      "Search for a product like Varmala, Frame or Preservation."+
+      "</p>";
+
+    return;
+
+  }
+
+  const results=
+    allProducts.filter(function(p){
+
+      return(
+        p.name.toLowerCase().includes(query) ||
+        p.size.toLowerCase().includes(query)
+      );
+
+    });
+
+
+  if(!results.length){
+
+    box.innerHTML=
+      "<p style='color:#806f66;font-size:13px;'>"+
+      "No matching product found."+
+      "</p>";
+
+    return;
+
+  }
+
+
+  box.innerHTML="";
+
+
+  results.forEach(function(p){
+
+    const index=
+      allProducts.indexOf(p);
+
+    const card=
+      document.createElement("div");
+
+    card.className="search-card";
+
+    card.innerHTML=
+      "<img src='"+p.image+"' alt=''>"+
+      "<div>"+
+      "<strong>"+p.name+"</strong>"+
+      "<span>"+p.price+"</span>"+
+      "</div>";
+
+    card.onclick=function(){
+
+      scCloseSearch();
+
+      setTimeout(function(){
+
+        scOpenQuick(index);
+
+      },100);
+
+    };
+
+    box.appendChild(card);
+
+  });
+
+}
+
+
+/* ---------- CONNECT HEADER BUTTONS ---------- */
+
+(function(){
+
+  const navButtons=
+    document.querySelectorAll(".nav-btn");
+
+  if(navButtons.length>0){
+
+    const first=
+      navButtons[0];
+
+    first.onclick=function(e){
+
+      e.preventDefault();
+
+      window.location.href=
+        "tel:+919027889846";
+
+    };
+
+  }
+
+})();
+
+
+/* ---------- MAKE CATEGORY CARDS CLICKABLE ---------- */
+
+(function(){
+
+  const categories=
+    document.querySelectorAll(".category");
+
+  categories.forEach(function(card,index){
+
+    card.style.cursor="pointer";
+
+    card.addEventListener("click",function(){
+
+      const target=
+        document.getElementById("products");
+
+      if(target){
+
+        target.scrollIntoView({
+          behavior:"smooth"
+        });
+
+      }
+
+      scToast(
+        index===0
+        ?"Varmala collection"
+        :index===1
+        ?"Custom frames"
+        :index===2
+        ?"Resin art"
+        :"Crochet art"
+      );
+
+    });
+
+  });
+
+})();
+
+
+/* ---------- ADD QUICK VIEW TO PRODUCTS ---------- */
+
+(function(){
+
+  const buttons=
+    document.querySelectorAll(".view-btn");
+
+  buttons.forEach(function(button,index){
+
+    button.addEventListener(
+      "contextmenu",
+      function(e){
+        e.preventDefault();
+      }
+    );
+
+  });
+
+})();
+
+
+/* ---------- GENERAL POPUP OUTSIDE CLICK ---------- */
+
+document.getElementById("scPopup")
+.addEventListener("click",function(e){
+
+  if(e.target===this){
+    scClosePopup();
+  }
+
+});
+
+
+/* ---------- QUICK PRODUCT OUTSIDE CLICK ---------- */
+
+document.getElementById("quickProduct")
+.addEventListener("click",function(e){
+
+  if(e.target===this){
+    scCloseQuick();
+  }
+
+});
+
+
+/* ---------- ESCAPE ---------- */
+
+document.addEventListener("keydown",function(e){
+
+  if(e.key==="Escape"){
+
+    scClosePopup();
+    scCloseQuick();
+    scCloseSearch();
+
+  }
+
+});
+
+
+/* ---------- MAKE BRAND CLICK ---------- */
+
+document.querySelector(".brand")
+?.addEventListener("click",function(e){
+
+  e.preventDefault();
+
+  window.scrollTo({
+    top:0,
+    behavior:"smooth"
+  });
+
+});
+
+
+/* ---------- WHATSAPP CONTACT ---------- */
+
+document.querySelectorAll(
+  'a[href*="wa.me"]'
+).forEach(function(link){
+
+  link.addEventListener("click",function(){
+
+    scToast("Opening WhatsApp...");
+
+  });
+
+});
+
+
+/* ---------- PHONE CONTACT ---------- */
+
+document.querySelectorAll(
+  'a[href^="tel:"]'
+).forEach(function(link){
+
+  link.addEventListener("click",function(){
+
+    scToast("Opening phone...");
+
+  });
+
+});
+
+
+/* ---------- INSTAGRAM ---------- */
+
+document.querySelectorAll(
+  'a[href*="instagram.com"]'
+).forEach(function(link){
+
+  link.addEventListener("click",function(){
+
+    scToast("Opening Instagram...");
+
+  });
+
+});
+
+
+/* ---------- PRELOAD PRODUCT DATA ---------- */
+
+if(
+  typeof allProducts!=="undefined"
+){
+
+  allProducts.forEach(function(p){
+
+    const img=
+      new Image();
+
+    img.src=p.image;
+
+  });
+
+}
+
+
+/* ---------- FINAL READY ---------- */
+
+window.addEventListener("load",function(){
+
+  document.documentElement.style.scrollBehavior="smooth";
+
+  scToast(
+    "Welcome to Shreeji Creations ✦"
+  );
+
+});
+
+</script>
+
+<!-- ================= END FUNCTIONALITY PATCH ================= -->
