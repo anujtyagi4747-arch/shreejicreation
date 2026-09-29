@@ -1430,3 +1430,403 @@ document.addEventListener("keydown",function(e){
 </script>
 
 <!-- ================= END PART 2 ================= -->
+<!-- ================= PART 3 ================= -->
+
+<style>
+/* MOBILE BOTTOM NAV */
+.mobile-nav{
+  display:none;
+}
+
+@media(max-width:700px){
+
+  body{
+    padding-bottom:72px;
+  }
+
+  .mobile-nav{
+    display:flex;
+    position:fixed;
+    left:9px;
+    right:9px;
+    bottom:9px;
+    height:59px;
+    z-index:800;
+    background:rgba(48,41,37,.96);
+    backdrop-filter:blur(15px);
+    border:1px solid rgba(255,255,255,.12);
+    border-radius:20px;
+    box-shadow:0 10px 35px rgba(30,20,15,.25);
+    align-items:center;
+    justify-content:space-around;
+  }
+
+  .mobile-nav a{
+    flex:1;
+    height:100%;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    gap:4px;
+    color:#cbbdb4;
+    font-size:9px;
+  }
+
+  .mobile-nav a span:first-child{
+    font-size:18px;
+  }
+
+  .mobile-nav a.active{
+    color:#e3a895;
+  }
+
+  .float-wa{
+    bottom:80px;
+    width:48px;
+    height:48px;
+    font-size:20px;
+  }
+
+  .topbar{
+    font-size:10px;
+  }
+
+  .section-head h2{
+    font-size:24px;
+  }
+
+  .hero-box{
+    background-position:center;
+  }
+}
+
+/* SMOOTH PRODUCT PRESS */
+.product{
+  will-change:transform;
+}
+
+.product img{
+  transition:transform .35s ease;
+}
+
+.product:hover img{
+  transform:scale(1.025);
+}
+
+/* BUTTON PRESS */
+.view-btn,
+.primary-btn,
+.light-btn,
+.whatsapp-btn,
+.contact-action a{
+  transition:transform .18s ease,opacity .18s ease;
+}
+
+.view-btn:active,
+.primary-btn:active,
+.light-btn:active,
+.whatsapp-btn:active,
+.contact-action a:active{
+  transform:scale(.96);
+  opacity:.85;
+}
+
+/* MODAL SCROLLBAR */
+.modal-box::-webkit-scrollbar{
+  width:4px;
+}
+
+.modal-box::-webkit-scrollbar-thumb{
+  background:#d7c3b7;
+  border-radius:20px;
+}
+
+/* SMALL BADGE */
+.order-badge{
+  display:inline-flex;
+  align-items:center;
+  gap:5px;
+  background:#f1e4da;
+  color:#76564b;
+  border-radius:30px;
+  padding:7px 10px;
+  font-size:10px;
+  margin-top:12px;
+}
+
+/* LOCATION CARD */
+.location-card{
+  margin-top:14px;
+  border-radius:19px;
+  overflow:hidden;
+  background:#eee3d9;
+  min-height:145px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  text-align:center;
+  padding:20px;
+}
+
+.location-card div{
+  font-size:12px;
+  color:#725e55;
+  line-height:1.7;
+}
+
+.location-card strong{
+  display:block;
+  color:#382d29;
+  font-family:Georgia,serif;
+  font-size:18px;
+  margin-bottom:5px;
+}
+
+/* DESKTOP BOTTOM NAV HIDDEN */
+@media(min-width:701px){
+  .mobile-nav{
+    display:none!important;
+  }
+}
+</style>
+
+
+<!-- LOCATION -->
+
+<section class="container">
+
+  <div class="location-card">
+
+    <div>
+      <strong>📍 Visit / Connect</strong>
+      Madhur Vihar, Lane Number 2,<br>
+      Dehradun 248001, Uttarakhand
+    </div>
+
+  </div>
+
+</section>
+
+
+<!-- EXTRA ORDER NOTE -->
+
+<section class="container" style="padding-top:18px;">
+
+  <div class="order-badge">
+    ✦ Custom orders available on WhatsApp
+  </div>
+
+</section>
+
+
+<!-- MOBILE NAVIGATION -->
+
+<nav class="mobile-nav">
+
+  <a href="#"
+     class="active"
+     onclick="goHome(event)">
+    <span>⌂</span>
+    <span>Home</span>
+  </a>
+
+  <a href="#products"
+     onclick="setNav(this)">
+    <span>♡</span>
+    <span>Products</span>
+  </a>
+
+  <a href="#about"
+     onclick="setNav(this)">
+    <span>✦</span>
+    <span>About</span>
+  </a>
+
+  <a href="https://wa.me/919027889846"
+     onclick="setNav(this)">
+    <span>◉</span>
+    <span>WhatsApp</span>
+  </a>
+
+</nav>
+
+
+<script>
+
+/* MOBILE NAV */
+
+function setNav(el){
+
+  document.querySelectorAll(".mobile-nav a")
+  .forEach(function(item){
+    item.classList.remove("active");
+  });
+
+  el.classList.add("active");
+}
+
+
+function goHome(e){
+
+  e.preventDefault();
+
+  window.scrollTo({
+    top:0,
+    behavior:"smooth"
+  });
+
+  document.querySelectorAll(".mobile-nav a")
+  .forEach(function(item){
+    item.classList.remove("active");
+  });
+
+  e.currentTarget.classList.add("active");
+}
+
+
+/* ACTIVE NAV ON SCROLL */
+
+window.addEventListener("scroll",function(){
+
+  const productsSection=
+    document.getElementById("products");
+
+  const aboutSection=
+    document.querySelector(".about");
+
+  const scrollY=window.scrollY;
+
+  document.querySelectorAll(".mobile-nav a")
+  .forEach(function(item){
+    item.classList.remove("active");
+  });
+
+  if(
+    aboutSection &&
+    scrollY >= aboutSection.offsetTop-220
+  ){
+
+    document.querySelectorAll(".mobile-nav a")[2]
+    .classList.add("active");
+
+  }else if(
+    productsSection &&
+    scrollY >= productsSection.offsetTop-180
+  ){
+
+    document.querySelectorAll(".mobile-nav a")[1]
+    .classList.add("active");
+
+  }else{
+
+    document.querySelectorAll(".mobile-nav a")[0]
+    .classList.add("active");
+
+  }
+
+});
+
+
+/* PREVENT OLD MODAL FROM STAYING OPEN */
+
+window.addEventListener("pageshow",function(){
+
+  const modal=
+    document.getElementById("productModal");
+
+  if(modal){
+    modal.classList.remove("show");
+  }
+
+  document.body.style.overflow="";
+
+});
+
+
+/* IMAGE LOADING OPTIMIZATION */
+
+document.querySelectorAll("img").forEach(function(img){
+
+  img.loading="lazy";
+
+});
+
+
+/* SMOOTH INTERNAL LINKS */
+
+document.querySelectorAll('a[href^="#"]')
+.forEach(function(link){
+
+  link.addEventListener("click",function(e){
+
+    const id=this.getAttribute("href");
+
+    if(id && id!=="#"){
+
+      const target=
+        document.querySelector(id);
+
+      if(target){
+
+        e.preventDefault();
+
+        target.scrollIntoView({
+          behavior:"smooth",
+          block:"start"
+        });
+
+      }
+
+    }
+
+  });
+
+});
+
+
+/* CLOSE MODAL AFTER WHATSAPP ACTION */
+
+function orderProduct(){
+
+  const p=allProducts[selectedProduct];
+
+  const message=
+    "Hello Shreeji Creations!%0A%0A"+
+    "I am interested in:%0A"+
+    "Product: "+p.name+"%0A"+
+    "Size: "+p.size+"%0A"+
+    "Price: "+p.price+"%0A"+
+    "Quantity: "+quantity+"%0A%0A"+
+    "Please share more details and availability.";
+
+  closeProduct();
+
+  setTimeout(function(){
+
+    window.open(
+      "https://wa.me/919027889846?text="+message,
+      "_blank"
+    );
+
+  },150);
+
+}
+
+
+/* IMAGE ERROR FALLBACK */
+
+document.querySelectorAll("img")
+.forEach(function(img){
+
+  img.addEventListener("error",function(){
+
+    this.style.background="#eee3d9";
+
+  });
+
+});
+
+</script>
+
+<!-- ================= END PART 3 ================= -->
