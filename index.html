@@ -626,3 +626,807 @@ function openProduct(i){
   window.open("https://wa.me/919027889846?text="+msg,"_blank");
 }
   </script>
+<!-- ================= PART 2 ================= -->
+
+<style>
+/* PRODUCT 5-8 */
+.product-extra{
+  margin-top:15px;
+}
+
+/* DETAILS MODAL */
+.modal{
+  position:fixed;
+  inset:0;
+  z-index:9999;
+  background:rgba(35,25,21,.62);
+  backdrop-filter:blur(8px);
+  display:none;
+  align-items:flex-end;
+  justify-content:center;
+  padding:12px;
+}
+
+.modal.show{
+  display:flex;
+}
+
+.modal-box{
+  width:100%;
+  max-width:520px;
+  max-height:92vh;
+  overflow:auto;
+  background:#fcfaf7;
+  border-radius:27px;
+  padding:10px;
+  animation:slideUp .28s ease;
+}
+
+@keyframes slideUp{
+  from{
+    transform:translateY(40px);
+    opacity:0;
+  }
+  to{
+    transform:translateY(0);
+    opacity:1;
+  }
+}
+
+.modal-img{
+  width:100%;
+  height:270px;
+  object-fit:cover;
+  border-radius:21px;
+}
+
+.close-row{
+  position:absolute;
+  top:22px;
+  right:22px;
+  z-index:3;
+}
+
+.close-btn{
+  width:38px;
+  height:38px;
+  border-radius:50%;
+  background:#302925;
+  color:white;
+  font-size:20px;
+}
+
+.modal-content{
+  padding:18px 9px 9px;
+}
+
+.modal-label{
+  color:#b57968;
+  text-transform:uppercase;
+  letter-spacing:1.5px;
+  font-size:10px;
+  font-weight:bold;
+}
+
+.modal-title{
+  font-family:Georgia,serif;
+  font-size:27px;
+  margin:6px 0;
+  color:#302925;
+}
+
+.modal-price{
+  font-size:20px;
+  font-weight:bold;
+  color:#6b4439;
+  margin-bottom:10px;
+}
+
+.modal-desc{
+  color:#756860;
+  line-height:1.65;
+  font-size:13px;
+}
+
+.order-row{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  margin-top:18px;
+}
+
+.qty{
+  display:flex;
+  align-items:center;
+  border:1px solid #dfd0c4;
+  border-radius:13px;
+  background:#f5eee7;
+  overflow:hidden;
+}
+
+.qty button{
+  width:38px;
+  height:44px;
+  background:transparent;
+  font-size:19px;
+  color:#49362f;
+}
+
+.qty span{
+  width:30px;
+  text-align:center;
+  font-weight:bold;
+}
+
+.whatsapp-btn{
+  flex:1;
+  height:44px;
+  border-radius:13px;
+  background:#302925;
+  color:white;
+  font-weight:bold;
+  font-size:13px;
+}
+
+/* ABOUT */
+.about{
+  margin-top:50px;
+  padding:34px 0;
+}
+
+.about-card{
+  background:#f1e7dc;
+  border:1px solid #e5d5c9;
+  border-radius:25px;
+  padding:28px 21px;
+}
+
+.about-card h2{
+  font-family:Georgia,serif;
+  font-size:28px;
+  margin:7px 0 12px;
+}
+
+.about-card p{
+  color:#706159;
+  line-height:1.75;
+  font-size:14px;
+}
+
+.about-points{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:10px;
+  margin-top:19px;
+}
+
+.about-point{
+  background:#fffaf5;
+  border-radius:15px;
+  padding:14px 10px;
+  font-size:12px;
+}
+
+.about-point strong{
+  display:block;
+  margin-bottom:4px;
+}
+
+.about-point span{
+  color:#806f66;
+}
+
+/* CONTACT */
+.contact{
+  padding:18px 0 45px;
+}
+
+.contact-card{
+  background:#302925;
+  color:white;
+  border-radius:25px;
+  padding:27px 21px;
+}
+
+.contact-card .eyebrow{
+  color:#d69a88;
+}
+
+.contact-card h2{
+  font-family:Georgia,serif;
+  font-size:28px;
+  margin:6px 0 18px;
+}
+
+.contact-item{
+  display:flex;
+  gap:12px;
+  align-items:flex-start;
+  margin:15px 0;
+}
+
+.contact-icon{
+  width:37px;
+  height:37px;
+  flex:none;
+  border-radius:50%;
+  background:#4a3933;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+
+.contact-item div:last-child{
+  font-size:13px;
+  line-height:1.55;
+  color:#eee2da;
+}
+
+.contact-action{
+  display:flex;
+  gap:9px;
+  margin-top:21px;
+}
+
+.contact-action a{
+  flex:1;
+  text-align:center;
+  padding:13px 7px;
+  border-radius:13px;
+  font-size:12px;
+  font-weight:bold;
+}
+
+.contact-wa{
+  background:#d69a88;
+  color:#302925;
+}
+
+.contact-call{
+  border:1px solid #78645b;
+  color:white;
+}
+
+/* INSTAGRAM */
+.instagram{
+  margin-top:18px;
+  background:#fff;
+  border:1px solid #eadfd6;
+  border-radius:20px;
+  padding:17px;
+  display:flex;
+  align-items:center;
+  gap:13px;
+}
+
+.insta-icon{
+  width:43px;
+  height:43px;
+  border-radius:14px;
+  background:#f1e1d7;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:21px;
+}
+
+.instagram strong{
+  display:block;
+  font-size:13px;
+}
+
+.instagram span{
+  color:#8a7770;
+  font-size:11px;
+}
+
+/* FOOTER */
+footer{
+  background:#211c19;
+  color:#cfc1b8;
+  text-align:center;
+  padding:25px 15px;
+  font-size:11px;
+  line-height:1.7;
+}
+
+footer strong{
+  color:white;
+  font-family:Georgia,serif;
+  font-size:15px;
+}
+
+/* FLOATING WHATSAPP */
+.float-wa{
+  position:fixed;
+  right:17px;
+  bottom:17px;
+  width:55px;
+  height:55px;
+  z-index:500;
+  border-radius:50%;
+  background:#302925;
+  color:white;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:24px;
+  box-shadow:0 8px 25px rgba(48,41,37,.28);
+}
+
+@media(max-width:700px){
+  .modal{
+    padding:8px;
+  }
+
+  .modal-box{
+    border-radius:24px;
+  }
+
+  .modal-img{
+    height:245px;
+  }
+
+  .modal-title{
+    font-size:24px;
+  }
+
+  .about{
+    margin-top:35px;
+  }
+}
+</style>
+
+
+<!-- EXTRA PRODUCTS -->
+
+<section class="container product-extra">
+
+  <div class="products">
+
+    <article class="product">
+      <img class="product-img"
+      src="https://images.unsplash.com/photo-1507504031003-b417219a0fde?auto=format&fit=crop&w=700&q=80"
+      alt="2 Partition Frame">
+
+      <div class="product-info">
+        <div class="product-title">2 Partition Frame</div>
+        <div class="product-size">12 × 24 inch frame</div>
+        <div class="price">₹4,500</div>
+
+        <button class="view-btn" onclick="openProduct(4)">
+          View Details
+        </button>
+      </div>
+    </article>
+
+
+    <article class="product">
+      <img class="product-img"
+      src="https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=700&q=80"
+      alt="Wedding Frame">
+
+      <div class="product-info">
+        <div class="product-title">Wedding Frame</div>
+        <div class="product-size">Half Resin Frame</div>
+        <div class="price">₹6,000</div>
+
+        <button class="view-btn" onclick="openProduct(5)">
+          View Details
+        </button>
+      </div>
+    </article>
+
+
+    <article class="product">
+      <img class="product-img"
+      src="https://images.unsplash.com/photo-1465495976277-4387d4b0e4a6?auto=format&fit=crop&w=700&q=80"
+      alt="14x14 Preservation">
+
+      <div class="product-info">
+        <div class="product-title">14 × 14 Preservation</div>
+        <div class="product-size">Varmala & Kaleera</div>
+        <div class="price">Price on WhatsApp</div>
+
+        <button class="view-btn" onclick="openProduct(6)">
+          View Details
+        </button>
+      </div>
+    </article>
+
+
+    <article class="product">
+      <img class="product-img"
+      src="https://images.unsplash.com/photo-1519225468359-299651c8f1c5?auto=format&fit=crop&w=700&q=80"
+      alt="Custom Memory Frame">
+
+      <div class="product-info">
+        <div class="product-title">Custom Memory Frame</div>
+        <div class="product-size">Customized design</div>
+        <div class="price">Price on WhatsApp</div>
+
+        <button class="view-btn" onclick="openProduct(7)">
+          View Details
+        </button>
+      </div>
+    </article>
+
+  </div>
+
+</section>
+
+
+<!-- ABOUT -->
+
+<section class="about container">
+
+  <div class="about-card">
+
+    <div class="eyebrow">Our Story</div>
+
+    <h2>Made With Love,<br>Made To Last.</h2>
+
+    <p>
+      Handcrafted memories turned into timeless art.
+      Shreeji Creations specializes in Varmala Preservation,
+      Resin Art, Crochet Art and Customized Frames made
+      with love and detail.
+    </p>
+
+    <p style="margin-top:10px;">
+      Every creation is designed to preserve your most
+      precious moments and turn them into beautiful
+      keepsakes that you can cherish forever.
+    </p>
+
+    <div class="about-points">
+
+      <div class="about-point">
+        <strong>💐 Varmala</strong>
+        <span>Preserve your wedding memories.</span>
+      </div>
+
+      <div class="about-point">
+        <strong>✨ Resin Art</strong>
+        <span>Beautiful handcrafted creations.</span>
+      </div>
+
+      <div class="about-point">
+        <strong>🖼️ Custom Frames</strong>
+        <span>Made specially for your memories.</span>
+      </div>
+
+      <div class="about-point">
+        <strong>🧶 Crochet Art</strong>
+        <span>Unique handmade gifting ideas.</span>
+      </div>
+
+    </div>
+
+  </div>
+
+</section>
+
+
+<!-- CONTACT -->
+
+<section class="contact container">
+
+  <div class="contact-card">
+
+    <div class="eyebrow">Get In Touch</div>
+
+    <h2>Let's Preserve<br>Your Memory.</h2>
+
+    <div class="contact-item">
+      <div class="contact-icon">📞</div>
+      <div>
+        <strong>Phone / WhatsApp</strong><br>
+        +91 90278 89846
+      </div>
+    </div>
+
+    <div class="contact-item">
+      <div class="contact-icon">📍</div>
+      <div>
+        <strong>Studio Location</strong><br>
+        Madhur Vihar, Lane Number 2,<br>
+        Dehradun 248001, Uttarakhand, India
+      </div>
+    </div>
+
+    <div class="contact-action">
+
+      <a class="contact-wa"
+         href="https://wa.me/919027889846">
+        WhatsApp
+      </a>
+
+      <a class="contact-call"
+         href="tel:+919027889846">
+        Call Now
+      </a>
+
+    </div>
+
+  </div>
+
+
+  <a class="instagram"
+     href="https://instagram.com/dehradun_varmalapreservation"
+     target="_blank">
+
+    <div class="insta-icon">◎</div>
+
+    <div>
+      <strong>@dehradun_varmalapreservation</strong>
+      <span>Follow us on Instagram</span>
+    </div>
+
+  </a>
+
+</section>
+
+
+<!-- PRODUCT DETAILS POPUP -->
+
+<div class="modal" id="productModal">
+
+  <div class="modal-box">
+
+    <div style="position:relative;">
+
+      <img id="modalImg"
+           class="modal-img"
+           src=""
+           alt="Product">
+
+      <div class="close-row">
+        <button class="close-btn"
+                onclick="closeProduct()">
+          ×
+        </button>
+      </div>
+
+    </div>
+
+    <div class="modal-content">
+
+      <div class="modal-label">
+        Shreeji Creations
+      </div>
+
+      <div id="modalTitle"
+           class="modal-title">
+        Product
+      </div>
+
+      <div id="modalPrice"
+           class="modal-price">
+        ₹0
+      </div>
+
+      <div id="modalSize"
+           class="modal-desc">
+        Product details
+      </div>
+
+      <div class="order-row">
+
+        <div class="qty">
+          <button onclick="changeQty(-1)">−</button>
+          <span id="qtyValue">1</span>
+          <button onclick="changeQty(1)">+</button>
+        </div>
+
+        <button class="whatsapp-btn"
+                onclick="orderProduct()">
+          Order on WhatsApp
+        </button>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
+
+
+<!-- FLOATING WHATSAPP -->
+
+<a class="float-wa"
+   href="https://wa.me/919027889846"
+   aria-label="WhatsApp">
+  ◉
+</a>
+
+
+<!-- FOOTER -->
+
+<footer>
+
+  <strong>Shreeji Creations</strong><br>
+
+  Varmala Preservation • Resin Art •
+  Crochet Art • Customized Frames
+
+  <br><br>
+
+  © 2026 Shreeji Creations. All rights reserved.
+
+</footer>
+
+
+<script>
+
+/* COMPLETE PRODUCT DATA */
+
+const allProducts=[
+
+  {
+    name:"Deep Preservation",
+    price:"₹7,500",
+    size:"14 × 20 inch",
+    image:"https://images.unsplash.com/photo-1519225421980-715cb0215aed?auto=format&fit=crop&w=700&q=80"
+  },
+
+  {
+    name:"Full Varmala",
+    price:"₹6,000",
+    size:"16 × 30 inch",
+    image:"https://images.unsplash.com/photo-1520854221256-17451cc331bf?auto=format&fit=crop&w=700&q=80"
+  },
+
+  {
+    name:"Full Varmala Preservation",
+    price:"₹8,000",
+    size:"20 × 30 inch",
+    image:"https://images.unsplash.com/photo-1511285560929-80b456fea0bc?auto=format&fit=crop&w=700&q=80"
+  },
+
+  {
+    name:"Full Varmala Preservation",
+    price:"₹8,500",
+    size:"18 × 30 inch",
+    image:"https://images.unsplash.com/photo-1464207687429-7505649dae38?auto=format&fit=crop&w=700&q=80"
+  },
+
+  {
+    name:"2 Partition Frame",
+    price:"₹4,500",
+    size:"12 × 24 inch frame",
+    image:"https://images.unsplash.com/photo-1507504031003-b417219a0fde?auto=format&fit=crop&w=700&q=80"
+  },
+
+  {
+    name:"Wedding Frame",
+    price:"₹6,000",
+    size:"Half resin frame",
+    image:"https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=700&q=80"
+  },
+
+  {
+    name:"14 × 14 Preservation",
+    price:"Price on WhatsApp",
+    size:"Varmala and Kaleera Preservation",
+    image:"https://images.unsplash.com/photo-1465495976277-4387d4b0e4a6?auto=format&fit=crop&w=700&q=80"
+  },
+
+  {
+    name:"Custom Memory Frame",
+    price:"Price on WhatsApp",
+    size:"Customized design",
+    image:"https://images.unsplash.com/photo-1519225468359-299651c8f1c5?auto=format&fit=crop&w=700&q=80"
+  }
+
+];
+
+let selectedProduct=0;
+let quantity=1;
+
+
+/* OPEN PRODUCT */
+
+function openProduct(index){
+
+  selectedProduct=index;
+  quantity=1;
+
+  const p=allProducts[index];
+
+  document.getElementById("modalImg").src=p.image;
+
+  document.getElementById("modalTitle").textContent=p.name;
+
+  document.getElementById("modalPrice").textContent=p.price;
+
+  document.getElementById("modalSize").textContent=
+    p.size+
+    " • Handcrafted with care by Shreeji Creations.";
+
+  document.getElementById("qtyValue").textContent=quantity;
+
+  document.getElementById("productModal").classList.add("show");
+
+  document.body.style.overflow="hidden";
+}
+
+
+/* CLOSE PRODUCT */
+
+function closeProduct(){
+
+  document.getElementById("productModal")
+  .classList.remove("show");
+
+  document.body.style.overflow="";
+}
+
+
+/* QUANTITY */
+
+function changeQty(value){
+
+  quantity+=value;
+
+  if(quantity<1){
+    quantity=1;
+  }
+
+  if(quantity>10){
+    quantity=10;
+  }
+
+  document.getElementById("qtyValue")
+  .textContent=quantity;
+}
+
+
+/* WHATSAPP ORDER */
+
+function orderProduct(){
+
+  const p=allProducts[selectedProduct];
+
+  const message=
+    "Hello Shreeji Creations!%0A%0A"+
+    "I am interested in:%0A"+
+    "Product: "+p.name+"%0A"+
+    "Size: "+p.size+"%0A"+
+    "Price: "+p.price+"%0A"+
+    "Quantity: "+quantity+"%0A%0A"+
+    "Please share more details.";
+
+  window.open(
+    "https://wa.me/919027889846?text="+message,
+    "_blank"
+  );
+}
+
+
+/* CLOSE WHEN CLICKING OUTSIDE */
+
+document.getElementById("productModal")
+.addEventListener("click",function(e){
+
+  if(e.target===this){
+    closeProduct();
+  }
+
+});
+
+
+/* ESCAPE KEY */
+
+document.addEventListener("keydown",function(e){
+
+  if(e.key==="Escape"){
+    closeProduct();
+  }
+
+});
+
+</script>
+
+<!-- ================= END PART 2 ================= -->
